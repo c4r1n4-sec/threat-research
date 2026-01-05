@@ -100,8 +100,11 @@ array = ProtectedData.Unprotect(EncryptedData, entropy,
 
 This isn't a vulnerability that can be patched. It's how DPAPI is designed. If malware runs as your user, it can decrypt anything DPAPI-protected. Defense needs to happen at the behavioral detection layer, not encryption.
 
-![DPAPI exploitation code](./images/dpapi-code.png)
+![DPAPI exploitation code](./images/dpapi-code-1.png)
 *ProtectedData.Unprotect() call - Windows hands over the keys*
+
+![DPAPI decryption implementation](./images/dpapi-code-2.png)
+*Additional DPAPI exploitation code showing the decryption flow*
 
 **Other targeted applications:**
 - `C_h_r_o_m_e`: Passwords, cookies, autofill, credit cards
