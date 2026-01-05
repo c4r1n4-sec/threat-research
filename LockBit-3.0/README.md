@@ -174,6 +174,11 @@ Loaded the extracted DLL into Ghidra. Entry point showed initialization chain:
 ![Empty stub](./images/ghidra-stub.png)
 *Stub function with immediate return - time waster*
 
+**Exported Functions:**
+
+![Ghidra exports](./images/ghidra-exports.png)
+*DLL exports table showing available functions*
+
 ### API Hashing
 
 Critical Windows APIs like `CoCreateInstance` from ole32.dll (needed for WMI) are absent from the import table. Instead, the malware dynamically resolves them at runtime using a custom hashing algorithm.
