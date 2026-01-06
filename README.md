@@ -26,6 +26,14 @@ Fileless ransomware using PowerShell reflective DLL injection. Extracted payload
 
 ---
 
+### 🔄 Lumma Stealer *(In Progress)*
+
+MaaS infostealer using AutoIt loader chains and fake CAPTCHA delivery. Analyzing post takedown (May 2025) sample showing persistence and adaptation after infrastructure disruption.
+
+**Sample Date:** January 2026 | **Distribution:** Cracked software | **Techniques:** AutoIt obfuscation, multi-stage loader
+
+---
+
 ## 🛠️ Tools
 
 FLARE-VM, REMnux, Wireshark, dnSpy, Hollows Hunter, System Informer, Ghidra, YARA, Python
