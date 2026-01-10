@@ -5,6 +5,11 @@
 Tore apart a post-takedown Lumma sample to understand how it survived the May 2025 Microsoft/DOJ operation. Decoded COMMONS obfuscation, mapped the 8-step infection chain, and analyzed C2 fingerprinting via JavaScript injection.
 
 **Source:** [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2026/01/01/index.html) (Brad Duncan) | **Captured:** January 1, 2026
+Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSides Tampa at USF
+which I attended. That's actually where I learned how to use Wireshark for malware analysis. Brad runs
+malware-traffic-analysis.net, which has been an awesome resource for the security community. He
+regularly posts real world malware samples with full packet captures and IOCs, making it perfect for
+hands on learning in my case.
 
 ---
 
