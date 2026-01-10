@@ -10,7 +10,7 @@ Tore apart a post-takedown Lumma sample to understand how it survived the May 20
 
 ## 🎯 What Makes This Interesting
 
-Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown. Resilient little bastard.
+Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown.
 
 ---
 
@@ -206,6 +206,8 @@ Examined Frame 227's response (gzip, 92 bytes). Tried to decompress:
 
 Wireshark showed "Decompression failed" warning.
 
+![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
+
 **Conclusion:** The tasking commands weren't in plaintext HTTP. They're either:
 - Sent over HTTPS (encrypted)
 - Hardcoded in the Lumma payload
@@ -216,8 +218,6 @@ This is a gap in the observable infection chain. We see fingerprinting and follo
 ### Follow-Up Malware Downloads
 
 Pivoted to analyzing what I could see. Applied filter `ip.addr == 46.8.227.214` (memory-scanner.cc):
-
-![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
 
 **Connection (Frames 5460-5462):**
 - TCP handshake to port 443 (HTTPS)
