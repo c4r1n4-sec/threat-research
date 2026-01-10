@@ -362,7 +362,8 @@ level: high
 - Source: MalwareBazaar (researcher/sandbox submission)
 - No target-specific customization (generic config)
 
-In September 2022, the LockBit 3.0 builder was leaked by a disgruntled affiliate. This sample exhibits characteristics consistent with builder-generated payloads.
+In September 2022, the LockBit 3.0 builder was leaked by a former affiliate, providing
+security researchers access to the ransomware source code and build process.
 
 **Operational samples** typically have:
 - Customized ransom notes with victim org names
