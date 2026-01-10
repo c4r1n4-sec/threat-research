@@ -5,16 +5,12 @@
 Tore apart a post-takedown Lumma sample to understand how it survived the May 2025 Microsoft/DOJ operation. Decoded COMMONS obfuscation, mapped the 8-step infection chain, and analyzed C2 fingerprinting via JavaScript injection.
 
 **Source:** [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2026/01/01/index.html) (Brad Duncan) | **Captured:** January 1, 2026
-Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSides Tampa at USF
-which I attended. That's actually where I learned how to use Wireshark for malware analysis. Brad runs
-malware-traffic-analysis.net, which has been an awesome resource for the security community. He
-regularly posts real world malware samples with full packet captures and IOCs, making it perfect for
-hands on learning in my case
+
 ---
 
 ## 🎯 What Makes This Interesting
 
-Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown.
+Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown. Resilient little bastard.
 
 ---
 
@@ -210,8 +206,6 @@ Examined Frame 227's response (gzip, 92 bytes). Tried to decompress:
 
 Wireshark showed "Decompression failed" warning.
 
-![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
-
 **Conclusion:** The tasking commands weren't in plaintext HTTP. They're either:
 - Sent over HTTPS (encrypted)
 - Hardcoded in the Lumma payload
@@ -222,6 +216,8 @@ This is a gap in the observable infection chain. We see fingerprinting and follo
 ### Follow-Up Malware Downloads
 
 Pivoted to analyzing what I could see. Applied filter `ip.addr == 46.8.227.214` (memory-scanner.cc):
+
+![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
 
 **Connection (Frames 5460-5462):**
 - TCP handshake to port 443 (HTTPS)
