@@ -46,7 +46,7 @@ Every sensitive string (API names, DLL paths, config data) is encoded as percent
 
 ### Obfuscation Analysis
 
-I'll be honest. I tried using FLOSS first and wasted time. FLOSS is for compiled Windows binaries (.exe, .dll) with machine code. AutoIt scripts are human-readable source code, so FLOSS just stared at it confused. Lesson learned.
+I'll be honest. I tried using FLOSS first and wasted time. FLOSS is for compiled Windows binaries (.exe, .dll) with machine code. AutoIt scripts are human readable source code, so FLOSS just stared at it confused. Lesson learned.
 
 Borrowed a friend's Python script that actually handles AutoIt's COMMONS obfuscation. After breaking the encoding layer, I found the good stuff:
 
