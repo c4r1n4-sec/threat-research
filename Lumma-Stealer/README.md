@@ -1,22 +1,18 @@
 # Lumma Stealer 🎭
 
-**AutoIt loader with process hollowing and network traffic forensics**
+**Static analysis of AutoIt loader + network forensics from PCAP**
 
-Tore apart a post-takedown Lumma sample to understand how it survived the May 2025 Microsoft/DOJ operation. Decoded COMMONS obfuscation, mapped the 8-step infection chain, and analyzed C2 fingerprinting via JavaScript injection.
+Tore apart a post-takedown Lumma sample to understand how it survived the May 2025 Microsoft/DOJ operation. Decoded COMMONS obfuscation, mapped the 8-step infection chain from static code analysis, and performed network forensics on Brad Duncan's packet capture to analyze C2 fingerprinting and encrypted payload delivery.
 
 **Source:** [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2026/01/01/index.html) (Brad Duncan) | **Captured:** January 1, 2026
-
-Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSides Tampa at USF
-which I attended. That's actually where I learned how to use Wireshark for malware analysis. Brad runs
-malware-traffic-analysis.net, which has been an awesome resource for the security community. He
-regularly posts real world malware samples with full packet captures and IOCs, making it perfect for
-hands on learning in my case.
 
 ---
 
 ## 🎯 What Makes This Interesting
 
 Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown. Resilient little bastard.
+
+**Note:** This analysis combines static reverse engineering (decompiling the AutoIt loader, decoding obfuscated strings, mapping the infection chain from code) with network forensics (analyzing a real-world PCAP capture). I did not perform live dynamic analysis with debuggers or process monitors.
 
 ---
 
@@ -89,9 +85,9 @@ Instead of listing suspicious APIs in the import table where AV can spot them, L
 
 ---
 
-## 🔗 Infection Chain
+## 🔗 Infection Chain (Derived from Static Analysis)
 
-After decoding everything, I mapped the execution flow by tracking API call line numbers. This revealed an 8-step infection chain using process hollowing to inject Lumma without dropping the final payload to disk.
+After decoding everything, I mapped the execution flow by tracking API call line numbers in the decoded strings. This revealed an 8-step infection chain. Important: this flow was reconstructed from static code analysis, not from observing the malware execute live.
 
 ![Infection chain diagram](images/infection-chain-diagram.png)
 
@@ -133,9 +129,9 @@ Payload runs inside the hollowed process. From forensics perspective, the proces
 
 ---
 
-## 🌐 Network Traffic Analysis
+## 🌐 Network Forensics (PCAP Analysis)
 
-After static analysis, I needed to see what actually happened on the wire. Brad's PCAP captures everything from execution through exfiltration.
+After static analysis, I analyzed Brad Duncan's packet capture to understand the network behavior. This is forensic analysis of captured traffic, not live dynamic execution. Brad's PCAP contains the complete infection from a real-world compromise.
 
 ### DNS Analysis
 
@@ -388,21 +384,25 @@ tags:
 
 **HTTPS blinds network security:** All follow-up downloads happened over TLS 1.3. Traditional inspection can't see what's being downloaded without TLS interception capabilities.
 
-**AutoIt + process hollowing = disk-based AV bypass:** The payload never touches disk. Signature-based AV scanning files at rest won't catch it.
+**Static analysis reveals the blueprint:** Even without running the malware, decompiling the AutoIt loader and decoding the obfuscated strings exposed the complete infection chain, anti-sandbox checks, and injection techniques.
 
-**Decompression before API resolution is smart:** `RtlDecompressFragment` is in ntdll.dll (always loaded, not suspicious). The injection APIs are what trigger alerts, so those get resolved dynamically to evade static analysis.
+**PCAP forensics fills the gaps:** Brad Duncan's real-world capture provided the network behavior that static analysis can only hint at. The combination of both approaches gives a complete picture.
 
 ---
 
 ## 🔧 Tools Used
 
-- **FLARE-VM** - Windows malware analysis environment
-- **REMnux** - Linux analysis toolkit
+**Static Analysis:**
 - **autoit-ripper** - AutoIt script decompiler
-- **Wireshark** - Network traffic analysis
-- **CyberChef** - Data decoding/transformation
-- **Custom Python** - COMMONS obfuscation decoder (borrowed from a friend)
+- **Custom Python** - COMMONS obfuscation decoder
 - **Draw.io** - Infection chain diagram
+
+**Network Forensics:**
+- **Wireshark** - PCAP analysis
+- **CyberChef** - Data decoding/transformation
+
+**Environment:**
+- **FLARE-VM** - Windows analysis environment (for static work)
 
 ---
 
@@ -411,4 +411,3 @@ tags:
 - [Brad Duncan - Malware Traffic Analysis](https://www.malware-traffic-analysis.net/2026/01/01/index.html)
 - [Microsoft Security Blog - Lumma Stealer Takedown (May 2025)](https://www.microsoft.com/security/blog/)
 - [MITRE ATT&CK Framework](https://attack.mitre.org/)
-
