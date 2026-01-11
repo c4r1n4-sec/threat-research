@@ -13,11 +13,11 @@ This is ongoing work. As I finish each analysis, I'll link it here and keep addi
 ## 📚 Analyses
 
 ### 🎭 [Lumma Stealer](./Lumma-Stealer/)
-**AutoIt loader with process hollowing and network traffic forensics**
+**Static analysis of AutoIt loader + network forensics from PCAP**
 
-Post-takedown sample showing how Lumma survived the May 2025 Microsoft/DOJ operation. COMMONS obfuscation, JavaScript fingerprinting, and encrypted follow-up malware downloads. The malware evolved from credential stealer to initial access loader.
+Post-takedown sample showing how Lumma survived the May 2025 Microsoft/DOJ operation. Decompiled the AutoIt loader, decoded COMMONS obfuscation, and performed PCAP forensics on Brad Duncan's real-world capture to analyze C2 fingerprinting and encrypted payload delivery.
 
-**Techniques:** AutoIt obfuscation, process hollowing, C2 fingerprinting, TLS evasion
+**Techniques:** AutoIt decompilation, string decoding, infection chain mapping, PCAP analysis, TLS SNI inspection
 
 ---
 
