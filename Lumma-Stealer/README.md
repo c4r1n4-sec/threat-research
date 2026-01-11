@@ -13,7 +13,7 @@ Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSi
 
 ## 🎯 What Makes This Interesting
 
-Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown. Resilient little bastard.
+Personally this was a threat I've dealt with many times during my time at Carbon Black. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown.
 
 **Note:** This analysis combines static reverse engineering (decompiling the AutoIt loader, decoding obfuscated strings, mapping the infection chain from code) with network forensics (analyzing a real-world PCAP capture). I did not perform live dynamic analysis with debuggers or process monitors.
 
