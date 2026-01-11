@@ -2,7 +2,9 @@
 
 Deep dives into malware, attack techniques, and adversary tactics. I tear apart samples to understand their execution chains, document evasion techniques, and build detection rules.
 
-This repo is part of my continuous learning process - each analysis introduces new reverse engineering techniques, tools, and detection methodologies. I document everything as I figure it out.
+This repo is part of my continuous learning process and each analysis introduces new reverse engineering techniques, tools, and detection methodologies. I document everything as I figure it out.
+
+Since I am constantly refining my skills, I gladly accept criticism and advice. If you see a better way to analyze a sample or improve a detection rule, I would love to hear from you.
 
 This is ongoing work. As I finish each analysis, I'll link it here and keep adding new samples.
 
