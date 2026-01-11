@@ -6,6 +6,8 @@ Tore apart a post-takedown Lumma sample to understand how it survived the May 20
 
 **Source:** [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2026/01/01/index.html) (Brad Duncan) | **Captured:** January 1, 2026
 
+Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSides Tampa at USF which I attended. That's actually where I learned how to use Wireshark for malware analysis. Brad runs malware-traffic-analysis.net, which has been an awesome resource for the security community. He regularly posts real world malware samples with full packet captures and IOCs, making it perfect for hands on learning in my case.
+
 ---
 
 ## 🎯 What Makes This Interesting
@@ -181,6 +183,8 @@ The POST body was URL-encoded garbage. Threw it into CyberChef with URL Decode:
 
 ![CyberChef URL decode](images/cyberchef-decode.png)
 
+![Task search results](images/empty-task-search.png)
+
 **Decoded Victim Profile:**
 
 | Attribute | Value |
@@ -197,8 +201,6 @@ The WebGL renderer showing "Microsoft Basic Render Driver" indicates a VM, but 1
 ### Searching for C2 Tasking Commands
 
 I wanted to find how the C2 told Lumma to download follow-up malware. Applied filter `http.request.uri contains "task"` looking for `/api/get_task` or similar.
-
-![Task search results](images/empty-task-search.png)
 
 No packets found.
 
