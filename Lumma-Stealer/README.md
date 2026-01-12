@@ -6,11 +6,14 @@ Tore apart a post-takedown Lumma sample to understand how it survived the May 20
 
 **Source:** [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2026/01/01/index.html) (Brad Duncan) | **Captured:** January 1, 2026
 
+Back in 2020, Brad Duncan gave a presentation on Malware Traffic Analysis at BSides Tampa at USF which I attended. That's actually where I learned how to use Wireshark for malware analysis during my tenure at Malwarebytes. Brad runs malware-traffic-analysis.net, which has been an awesome resource for the security community. He regularly posts real world malware samples with full packet captures and IOCs, making it perfect for hands on learning in my case.
+
+![USF-BSIDES](images/USF-BSIDES.png)
 ---
 
 ## 🎯 What Makes This Interesting
 
-Lumma isn't just stealing credentials anymore. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown. Resilient little bastard.
+Personally this was a threat I've dealt with many times during my time at Carbon Black. It's evolved into an initial access loader that profiles victims with JavaScript fingerprinting, then deploys follow-up malware over encrypted channels. The AutoIt loader uses process hollowing to inject the payload without dropping files to disk, and the whole thing rebuilt its infrastructure within months of the DOJ takedown.
 
 **Note:** This analysis combines static reverse engineering (decompiling the AutoIt loader, decoding obfuscated strings, mapping the infection chain from code) with network forensics (analyzing a real-world PCAP capture). I did not perform live dynamic analysis with debuggers or process monitors.
 
@@ -44,7 +47,7 @@ Every sensitive string (API names, DLL paths, config data) is encoded as percent
 
 ### Obfuscation Analysis
 
-I'll be honest. I tried using FLOSS first and wasted time. FLOSS is for compiled Windows binaries (.exe, .dll) with machine code. AutoIt scripts are human-readable source code, so FLOSS just stared at it confused. Lesson learned.
+I'll be honest. I tried using FLOSS first and wasted time. FLOSS is for compiled Windows binaries (.exe, .dll) with machine code. AutoIt scripts are human readable source code, so FLOSS just stared at it confused. Lesson learned.
 
 Borrowed a friend's Python script that actually handles AutoIt's COMMONS obfuscation. After breaking the encoding layer, I found the good stuff:
 
@@ -181,6 +184,8 @@ The POST body was URL-encoded garbage. Threw it into CyberChef with URL Decode:
 
 ![CyberChef URL decode](images/cyberchef-decode.png)
 
+![Task search results](images/empty-task-search.png)
+
 **Decoded Victim Profile:**
 
 | Attribute | Value |
@@ -198,8 +203,6 @@ The WebGL renderer showing "Microsoft Basic Render Driver" indicates a VM, but 1
 
 I wanted to find how the C2 told Lumma to download follow-up malware. Applied filter `http.request.uri contains "task"` looking for `/api/get_task` or similar.
 
-![Task search results](images/empty-task-search.png)
-
 No packets found.
 
 Examined Frame 227's response (gzip, 92 bytes). Tried to decompress:
@@ -207,6 +210,8 @@ Examined Frame 227's response (gzip, 92 bytes). Tried to decompress:
 ![Decompression failed](images/decompression-failed.png)
 
 Wireshark showed "Decompression failed" warning.
+
+![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
 
 **Conclusion:** The tasking commands weren't in plaintext HTTP. They're either:
 - Sent over HTTPS (encrypted)
@@ -218,8 +223,6 @@ This is a gap in the observable infection chain. We see fingerprinting and follo
 ### Follow-Up Malware Downloads
 
 Pivoted to analyzing what I could see. Applied filter `ip.addr == 46.8.227.214` (memory-scanner.cc):
-
-![Memory-scanner.cc traffic](images/memory-scanner-traffic.png)
 
 **Connection (Frames 5460-5462):**
 - TCP handshake to port 443 (HTTPS)
